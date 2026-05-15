@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Student Records Management{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-5 fw-bold text-primary mb-3">Student Records Management</h1>
+    <p class="lead text-muted mb-4">
+        A simple system to manage student records — add, view, and delete students.
+    </p>
+
+    {% if session.logged_in %}
+        <a href="{{ url_for('students') }}" class="btn btn-primary btn-lg me-2" id="view-students-btn">
+            View Students
+        </a>
+        <a href="{{ url_for('add_student') }}" class="btn btn-success btn-lg" id="add-student-btn">
+            Add Student
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg" id="get-started-btn">
+            Get Started &rarr;
+        </a>
+        <p class="text-muted mt-3 small">Demo credentials: <strong>admin</strong> / <strong>admin123</strong></p>
+    {% endif %}
+</div>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="row text-center g-3">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-3">
+                    <div class="fs-2">&#128218;</div>
+                    <h6 class="mt-2">View Records</h6>
+                    <p class="text-muted small">Browse all student records in one place.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-3">
+                    <div class="fs-2">&#10133;</div>
+                    <h6 class="mt-2">Add Students</h6>
+                    <p class="text-muted small">Quickly add new student entries.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-3">
+                    <div class="fs-2">&#128274;</div>
+                    <h6 class="mt-2">Secure Access</h6>
+                    <p class="text-muted small">Session-based authentication.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

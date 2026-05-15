@@ -1,0 +1,31 @@
+# ---- Selenium test runner image ----
+# Based on Debian Bookworm (same as python:3.11-slim).
+# Installs Chromium + matching ChromeDriver from the official Debian repo —
+# this guarantees version compatibility without webdriver-manager downloads.
+FROM python:3.11-slim
+
+# Install Chromium and its WebDriver
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    chromium \
+    chromium-driver \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python test dependencies
+RUN pip install --no-cache-dir \
+    selenium==4.21.0 \
+    pytest==8.2.2 \
+    webdriver-manager==4.0.1
+
+# Copy Selenium test suite
+COPY selenium_tests/ /app/selenium_tests/
+
+# Tell conftest.py to use the system-installed binaries
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
+
+# Default: run all Selenium tests against APP_URL (overridden at runtime)
+ENV APP_URL=http://app:5000
+
+CMD ["pytest", "selenium_tests/", "-v", "--tb=short"]
